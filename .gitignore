@@ -1,8 +1,10 @@
+# processed data
+data/processed/
+
+# models
+models/
+
 # virtual environment
 venv/
 
-# processed data
-data/processed/!.gitkeep
-
-# models
-models/!.gitkeep
+!.gitkeep
