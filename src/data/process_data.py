@@ -12,17 +12,12 @@ keys = ["school", "sex", "age", "address", "famsize", "Pstatus", "Medu", "Fedu",
 
 data = data_mat.merge(data_por, how = "inner", on = keys, suffixes = ("_mat", "_por"))
 
-# assign binary, nominal and numerical data for preprocessing
+# assign binary and nominal data for preprocessing
 binary_cols_names = ["school", "sex", "address", "famsize", "Pstatus", "schoolsup", 
                      "famsup", "activities", "nursery", "higher", "internet", 
                      "romantic", "paid_mat", "paid_por"]
 
 nominal_cols_names = ["Mjob", "Fjob", "reason", "guardian"]
-
-numerical_cols_names = ["age", "Medu", "Fedu", "traveltime", "studytime", 
-                        "failures_mat", "failures_por", "famrel", "freetime", "goout", 
-                        "Dalc", "Walc", "health", "absences_mat", "absences_por", 
-                        "G1_mat", "G2_mat", "G3_mat","G1_por", "G2_por", "G3_por"]
 
 # create one-hot encoders for binary and nominal variables
 from sklearn.preprocessing import OneHotEncoder
@@ -51,10 +46,33 @@ nominal_cols = pd.DataFrame(nominal_encoder.fit_transform(data[nominal_cols_name
 nominal_cols.set_index(data.index)
 nominal_cols.columns = nominal_encoder.get_feature_names_out()
 
-# standardize the numerical variables
+# assign and normalize the numerical variables
+numerical_cols_names = ["age", "Medu", "Fedu", "traveltime", "studytime", 
+                        "failures_mat", "failures_por", "famrel", "freetime", "goout", 
+                        "Dalc", "Walc", "health", "absences_mat", "absences_por", 
+                        "G1_mat", "G2_mat", "G3_mat","G1_por", "G2_por", "G3_por"]
+
 numerical_cols = data[numerical_cols_names]
 numerical_cols.set_index(data.index)
-numerical_cols = (numerical_cols - numerical_cols.min()) / (numerical_cols.max() - numerical_cols.min())
+
+one_to_five_cols = ["Medu", "Fedu", "traveltime", "studytime", "famrel", 
+                    "freetime", "goout", "Dalc", "Walc", "health"]
+
+grades = ["G1_mat", "G2_mat", "G3_mat","G1_por", "G2_por", "G3_por"]
+
+failures = ["failures_mat", "failures_por"]
+
+absences = ["absences_mat", "absences_por"]
+
+def normalize(value, min, max):
+    return ((value - min) / (max - min))
+
+numerical_cols.loc[:, one_to_five_cols] = numerical_cols[one_to_five_cols].apply(lambda x : normalize(x, 1, 5))
+numerical_cols.loc[:, failures] = numerical_cols[failures].apply(lambda x : normalize(x, 0, 3))
+numerical_cols.loc[:, grades] = numerical_cols[grades].apply(lambda x : normalize(x, 0, 20))
+numerical_cols.loc[:, absences] = numerical_cols[absences].apply(lambda x : normalize(x, 0, 93))
+numerical_cols.loc[:, "age"] = numerical_cols["age"].apply(lambda x : normalize(x, 15, 22))
+
 numerical_cols.round(4)
 
 # concatenate all the variables
