@@ -55,6 +55,9 @@ numerical_cols_names = ["age", "Medu", "Fedu", "traveltime", "studytime",
 numerical_cols = data[numerical_cols_names]
 numerical_cols.set_index(data.index)
 
+# create a variable for summed alcohol consumption
+numerical_cols["Salc"] = numerical_cols["Dalc"] + numerical_cols["Walc"]
+
 one_to_five_cols = ["Medu", "Fedu", "traveltime", "studytime", "famrel", 
                     "freetime", "goout", "Dalc", "Walc", "health"]
 
@@ -72,6 +75,7 @@ numerical_cols.loc[:, failures] = numerical_cols[failures].apply(lambda x : norm
 numerical_cols.loc[:, grades] = numerical_cols[grades].apply(lambda x : normalize(x, 0, 20))
 numerical_cols.loc[:, absences] = numerical_cols[absences].apply(lambda x : normalize(x, 0, 93))
 numerical_cols.loc[:, "age"] = numerical_cols["age"].apply(lambda x : normalize(x, 15, 22))
+numerical_cols.loc[:, "Salc"] = numerical_cols["Salc"].apply(lambda x : normalize(x, 2, 10))
 
 numerical_cols.round(4)
 
