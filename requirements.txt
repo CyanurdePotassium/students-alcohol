@@ -44,3 +44,4 @@ tornado==6.4
 traitlets==5.14.0
 tzdata==2023.4
 wcwidth==0.2.12
+seaborn==0.13.1
