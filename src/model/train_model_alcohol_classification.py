@@ -18,12 +18,12 @@ from tune_sklearn import TuneSearchCV
 data_classification = pd.read_csv('../../data/processed/students_processed.csv', index_col=0)
 
 # Lista kolumn do wykluczenia
-columns_to_exclude_classification = ['G1_por', 'G2_por', 'G1_mat', 'G2_mat', 'G1_avg', 'G2_avg', 'G3_avg', 'G3_mat', 'G3_por', 'Salc']
+columns_to_exclude_classification = ['G1_por', 'G2_por', 'G1_mat', 'G2_mat', 'G1_avg', 'G2_avg', 'G3_avg', 'G3_mat', 'G3_por', 'Walc', 'Dalc']
 data_subset_classification = data_classification.drop(columns=columns_to_exclude_classification)
 
 # Podział na zbiór cech i zbiór etykiet
-X_classification = data_subset_classification.drop('G_avg', axis=1)
-y_classification = (data_classification['G_avg'] >= 0.5).astype(int)  # Klasyfikacja binarna, próg "zaliczenia" 50%
+X_classification = data_subset_classification.drop('Salc', axis=1)
+y_classification = (data_classification['Salc'] >= 0.4).astype(int)  # Klasyfikacja binarna, próg "spozycia" 40%
 
 # Podział zbioru danych na zestaw treningowy i testowy
 X_train_classification, X_test_classification, y_train_classification, y_test_classification = train_test_split(X_classification, y_classification, test_size=0.2, random_state=42)

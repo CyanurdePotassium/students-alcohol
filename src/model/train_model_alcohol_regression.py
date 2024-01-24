@@ -19,12 +19,12 @@ from sklearn import metrics
 data_regression = pd.read_csv('../../data/processed/students_processed.csv', index_col=0)
 
 # Lista kolumn do wykluczenia
-columns_to_exclude_regression = ['G1_por', 'G2_por', 'G1_mat', 'G2_mat', 'G1_avg', 'G2_avg', 'G3_avg', 'G3_mat', 'G3_por', 'Salc']
+columns_to_exclude_regression = ['G1_por', 'G2_por', 'G1_mat', 'G2_mat', 'G1_avg', 'G2_avg', 'G3_avg', 'G3_mat', 'G3_por', 'Walc', 'Dalc']
 data_subset_regression = data_regression.drop(columns=columns_to_exclude_regression)
 
 # Podział na zbiór cech i zbiór etykiet
-X_regression = data_subset_regression.drop('G_avg', axis=1)
-y_regression = data_subset_regression['G_avg']  # Zmienna celu dla regresji
+X_regression = data_subset_regression.drop('Salc', axis=1)
+y_regression = data_subset_regression['Salc']  # Zmienna celu dla regresji
 
 # Podział zbioru danych na zestaw treningowy i testowy
 X_train_regression, X_test_regression, y_train_regression, y_test_regression = train_test_split(X_regression, y_regression, test_size=0.2, random_state=42)
