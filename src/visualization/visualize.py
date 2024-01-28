@@ -1,1 +1,1 @@
-# wizualizacja danych jest zintegrowana z train_model.py
+#To do:Przeniesc tu wizualizacje
