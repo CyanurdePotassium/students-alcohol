@@ -88,7 +88,7 @@ hyperparameters_df_regression['mean_test_score'] = mean_test_scores_regression
 fig_regression = px.parallel_coordinates(
     hyperparameters_df_regression,
     color='mean_test_score',
-    color_continuous_scale='Viridis',
+    color_continuous_scale='reds',
     labels={'color': 'Mean Test Score'},
     dimensions=['n_estimators', 'max_depth', 'min_samples_split', 'min_samples_leaf', 'max_features'],
 )
@@ -123,8 +123,14 @@ selected_feature_names_regression = X_train_regression.columns[selected_feature_
 feature_importances_regression = pd.Series(random_forest_regressor.feature_importances_, index=X_train_regression.columns)
 sorted_feature_importances_regression = feature_importances_regression[selected_feature_names_regression].sort_values().to_frame(name='Istotność')
 
-plt.figure(figsize=(10, 6))
-sns.barplot(x='Istotność', y=sorted_feature_importances_regression.index, data=sorted_feature_importances_regression, palette='viridis')
+plt.figure(figsize=(12.8, 9.6))
+ax = sns.barplot(x='Istotność', y=sorted_feature_importances_regression.index, data=sorted_feature_importances_regression, palette='mako')
+for p in ax.patches:
+    ax.text(p.get_width(),       # Położenie etykiety na osi X (prawo od słupka)
+            p.get_y() + p.get_height() / 2,  # Położenie etykiety na osi Y (środek słupka)
+            '{:1.3f}'.format(p.get_width()), # Tekst etykiety
+            va='center')                     # Wyrównanie etykiety
+ax.xaxis.grid(True, linestyle='--', linewidth=0.5, color='gray', alpha=0.7)
 plt.title('Istotność cech')
 plt.xlabel('Istotność')
 plt.ylabel('Cecha')
